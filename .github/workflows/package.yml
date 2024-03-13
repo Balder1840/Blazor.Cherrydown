@@ -39,6 +39,6 @@ jobs:
       run: dotnet restore
 
     - name: Build Package
-      run: dotnet pack Blazor.Cherrydown/Blazor.Cherrydown.csproj /p:Version ${VERSION} -c ${{ env.Configuration }} -o ../publish -v m --no-restore
+      run: dotnet pack Blazor.Cherrydown/Blazor.Cherrydown.csproj /p:Version=${VERSION} -c ${{ env.Configuration }} -o ../publish -v m --no-restore
 
     
