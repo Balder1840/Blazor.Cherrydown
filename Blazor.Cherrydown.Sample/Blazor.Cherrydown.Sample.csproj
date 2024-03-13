@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!--Do not need
+    It will change contents in "Blazor.Cherrydown.Sample.styles.css" from
+    @import '_content/Blazor.Cherrydown/Blazor.Cherrydown.bundle.scp.css';
+    to
+    @import '../_content/Blazor.Cherrydown/Blazor.Cherrydown.bundle.scp.css';-->
+    <!--<StaticWebAssetBasePath>CoolApp</StaticWebAssetBasePath>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blazor.Cherrydown\Blazor.Cherrydown.csproj" />
+  </ItemGroup>
+
+</Project>
