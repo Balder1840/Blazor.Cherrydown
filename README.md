@@ -11,16 +11,20 @@ A blazor markdown editor wraps of [cherry-markdown](https://github.com/Tencent/c
 # Getting started
 
 ## Install the package, or download the project and reference it.
-`dotnet add package Blazor.Cherrydown`
+```
+dotnet add package Blazor.Cherrydown
+```
 
 ## Add the following using statement in _Imports.razor.
-`@using Blazor.Cherrydown`
+```razor
+@using Blazor.Cherrydown
+```
 
 > do not need to add the reference to the `javascript` and `CSS`, `Blazor.Cherrydown` will do it for you.
 > for more into, you can refer to [blazor initializer](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/startup?view=aspnetcore-8.0#javascript-initializers)
 
 ## Add Cherrydown in a page
-```csharp
+```razor
 <button @onclick="ChangeMarkdown">Change Markdown</button>
 <Cherrydown @bind-Markdown="_markdown" OnFileUpload="@SaveFile" />
 
