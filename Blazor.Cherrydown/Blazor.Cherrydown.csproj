@@ -4,8 +4,29 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Version>0.1.4</Version>
+    
+    <Authors>balder1840</Authors>
+    <Description>A blazor markdown editor wraps of cherry-markdown</Description>
+    <RepositoryUrl>https://github.com/Balder1840/Blazor.Cherrydown</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>blazor, markdown, markdown-editor</PackageTags>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Balder1840/Blazor.Cherrydown</PackageProjectUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />

@@ -48,10 +48,10 @@ namespace Blazor.Cherrydown
         #endregion
 
         #region Component lifecycles
-        public override Task SetParametersAsync(ParameterView parameters)
-        {
-            return base.SetParametersAsync(parameters);
-        }
+        //public override Task SetParametersAsync(ParameterView parameters)
+        //{
+        //    return base.SetParametersAsync(parameters);
+        //}
 
         protected override void OnInitialized()
         {
@@ -61,10 +61,10 @@ namespace Blazor.Cherrydown
             base.OnInitialized();
         }
 
-        protected override Task OnParametersSetAsync()
-        {
-            return base.OnParametersSetAsync();
-        }
+        //protected override Task OnParametersSetAsync()
+        //{
+        //    return base.OnParametersSetAsync();
+        //}
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -91,7 +91,7 @@ namespace Blazor.Cherrydown
                 if (_markdown != Markdown)
                 {
                     _markdown = Markdown;
-                    await JS.SetValue(ElementRef, _markdown);
+                    await JS!.SetValue(ElementRef, _markdown ?? string.Empty);
                 }
             }
             await base.OnAfterRenderAsync(firstRender);
