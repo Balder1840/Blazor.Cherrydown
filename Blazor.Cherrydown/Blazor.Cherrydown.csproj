@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>0.1.4</Version>
     
     <Authors>balder1840</Authors>
     <Description>A blazor markdown editor wraps of cherry-markdown</Description>
