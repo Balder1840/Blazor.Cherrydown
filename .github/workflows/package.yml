@@ -42,7 +42,7 @@ jobs:
       run: dotnet pack Blazor.Cherrydown/Blazor.Cherrydown.csproj /p:Version=${VERSION} -c ${{ env.Configuration }} -o packages -v m --no-restore
     
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.ArtifactsName }}
         path: packages/*nupkg
@@ -54,7 +54,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Download Packages
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.ArtifactsName }}
 
