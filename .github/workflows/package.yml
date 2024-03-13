@@ -1,11 +1,11 @@
-name: Packages
+name: Blazor.Cherrydown Packages
 
 on:
   workflow_dispatch:
 
 env:
   Configuration: Release
-  ArtifactsName: nuget
+  ArtifactsName: Blazor_Cherrydown_Nuget_Package
   dotnet-version: "8.0.x"
   nuget_feed_source: 'https://api.nuget.org/v3/index.json'
   
@@ -39,6 +39,11 @@ jobs:
       run: dotnet restore
 
     - name: Build Package
-      run: dotnet pack Blazor.Cherrydown/Blazor.Cherrydown.csproj /p:Version=${VERSION} -c ${{ env.Configuration }} -o ../publish -v m --no-restore
+      run: dotnet pack Blazor.Cherrydown/Blazor.Cherrydown.csproj /p:Version=${VERSION} -c ${{ env.Configuration }} -o ../packages -v m --no-restore
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.ArtifactsName }}
+        path: packages/*nupkg
     
