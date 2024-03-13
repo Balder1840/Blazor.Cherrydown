@@ -11,7 +11,7 @@ env:
   
 jobs:
   build:
-    name: Build packages
+    name: Build package
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -46,4 +46,17 @@ jobs:
       with:
         name: ${{ env.ArtifactsName }}
         path: packages/*nupkg
-    
+
+  publish_nuget:
+    name: Publish to nuget.org
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download Packages
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.ArtifactsName }}
+
+      - name: Publish to nuget.org
+        run: dotnet nuget push *.nupkg -k ${{ secrets.BLAZOR_CHERRYDOWN_NUGET_SECRET }} -s ${{ env.nuget_feed_source }} --skip-duplicate
