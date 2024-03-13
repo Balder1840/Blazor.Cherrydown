@@ -39,11 +39,11 @@ jobs:
       run: dotnet restore
 
     - name: Build Package
-      run: dotnet pack Blazor.Cherrydown/Blazor.Cherrydown.csproj /p:Version=${VERSION} -c ${{ env.Configuration }} -o ../packages -v m --no-restore
+      run: dotnet pack Blazor.Cherrydown/Blazor.Cherrydown.csproj /p:Version=${VERSION} -c ${{ env.Configuration }} -o packages -v m --no-restore
     
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.ArtifactsName }}
-        path: ../packages/*nupkg
+        path: packages/*nupkg
     
