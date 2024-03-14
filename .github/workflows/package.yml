@@ -1,8 +1,24 @@
 name: Blazor.Cherrydown Packages
 
 on:
+  push:
+    branches:
+      - dev-tags
+    # works on directly push tags to branch
+    tags:
+      - v*
   workflow_dispatch:
-
+    inputs:
+      version:
+        description: package version number
+        type: string
+        required: false
+      publish:
+        description: publish to nuget or not
+        type: boolean
+        required: true
+        default: false
+        
 env:
   Configuration: Release
   ArtifactsName: Blazor_Cherrydown_Nuget_Package
@@ -29,8 +45,10 @@ jobs:
       run: |
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             TAG_NAME=${{ github.ref }} # e.g., refs/tags/3.0.0
-            TAG_NAME=${TAG_NAME#refs/tags/} # remove the refs/tags/ prefix
+            TAG_NAME=${TAG_NAME#refs/tags/v} # remove the refs/tags/ prefix
             echo "VERSION=${TAG_NAME}" >> $GITHUB_ENV
+          elif [ "${{inputs.version}}" ]; then
+            echo "VERSION=${{inputs.version}}" >> $GITHUB_ENV
           else
             echo "VERSION=0.1.${{github.run_number}}" >> $GITHUB_ENV
           fi
@@ -50,6 +68,7 @@ jobs:
   publish_nuget:
     name: Publish to nuget.org
     needs: build
+    if: ${{ inputs.publish}}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
