@@ -111,8 +111,8 @@ export function initialize(dotNetObjectRef, element, elementId, options) {
  * @param {'edit&preview'|'editOnly'|'previewOnly'} [model=edit&preview] 模式类型
  * 一般纯预览模式和纯编辑模式适合在屏幕较小的终端使用，比如手机移动端
  */
-export function switchModel(element, model) {
-    element.$cherryEditor?.switchMode(model ?? 'edit&preview')
+export function switchMode(element, model) {
+    element.$cherryEditor?.switchModel(model ?? 'edit&preview')
 }
 
 /**
@@ -303,7 +303,8 @@ const basicConfig = {
                 upperCase: false,
             },
             toc: {
-                tocStyle: 'nested'
+                tocStyle: 'nested',//'nested','plain'
+                showAutoNumber: true
             }
         },
     },
@@ -348,6 +349,7 @@ const basicConfig = {
         toc: {
             updateLocationHash: false, // 要不要更新URL的hash
             defaultModel: 'pure', // pure: 精简模式/缩略模式，只有一排小点； full: 完整模式，会展示所有标题
+            showAutoNumber: true
         }
     },
     // drawioIframeUrl: './drawio_demo.html',

@@ -8,11 +8,14 @@
     CherrydownEditor- @_markdown.Substring(0, 10)
 </h3>
 <button @onclick="ChangeMarkdown">Change Markdown</button>
+<button @onclick="SwitchMode">Switch Mode</button>
 
-<Cherrydown @bind-Markdown="_markdown" OnFileUpload="@SaveFile" />
+<Cherrydown @bind-Markdown="_markdown" OnFileUpload="@SaveFile" @ref="Editor" />
 
 @code {
     private string? _markdown = "# CherrydownEditor";
+
+    private Cherrydown Editor;
 
     protected override void OnParametersSet()
     {
@@ -26,13 +29,22 @@
         _markdown = "# Changed Markdown";
     }
 
+    async Task SwitchMode()
+    {
+        await Editor.SwitchModeAsync(CherrydownMode.PreviewOnly);
+
+        await Task.Delay(15 * 1000);
+
+        await Editor.SwitchModeAsync(CherrydownMode.EditAndPreview);
+    }
+
     private async Task<FileUploadResult> SaveFile(FileUpload.IBrowserFile file)
     {
         var workDir = _config.GetValue<string>("WorkDir");
         var workDirVirtualPath = _config.GetValue<string>("WorkDirVirtualPath");
 
         await using FileStream fs = new(Path.Combine(workDir, file.Name), FileMode.Create);
-        await file.OpenReadStream(15 * 1024 * 1024).CopyToAsync(fs);
+        await file.OpenReadStream(15 * 1024 * 1024).CopyToAsync(fs); // 15M
 
         return new FileUploadResult { FileUri = $"{workDirVirtualPath}/{file.Name}" };
     }
