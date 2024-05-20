@@ -337,7 +337,7 @@ const basicConfig = {
             'graph',
             '|',
             'togglePreview',
-            'switchModel',
+            //'switchModel',
             '|',
             'export',
             //'codeTheme',
