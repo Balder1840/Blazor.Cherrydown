@@ -1,0 +1,38 @@
+﻿@using Radzen.Blazor
+@inject StateContainer _stateContainer
+@implements IDisposable
+<RadzenButton Text="Save"
+              BusyText="Saving"
+              IsBusy="_stateContainer.IsSaving"
+              ButtonStyle="Radzen.ButtonStyle.Light"
+              Click="SaveMarkdownContent" />
+
+@code {
+    [Parameter]
+    public EventCallback OnSaving { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _stateContainer.OnSavingChanged += StateHasChanged;
+
+        base.OnInitialized();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
+
+    void SaveMarkdownContent()
+    {
+        if (OnSaving.HasDelegate)
+        {
+            OnSaving.InvokeAsync();
+        }
+    }
+
+    public void Dispose()
+    {
+        _stateContainer.OnSavingChanged -= StateHasChanged;
+    }
+}

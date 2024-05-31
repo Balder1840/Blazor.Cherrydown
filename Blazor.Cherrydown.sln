@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Cherrydown", "Blazor.Cherrydown\Blazor.Cherrydown.csproj", "{A76EAABE-E610-4AA0-A148-E05FB75CCA93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Cherrydown.Sample", "Blazor.Cherrydown.Sample\Blazor.Cherrydown.Sample.csproj", "{D65CB639-8B09-42E1-AC0D-DD65963FD6EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Cherrydown.Sample", "Blazor.Cherrydown.Sample\Blazor.Cherrydown.Sample.csproj", "{D65CB639-8B09-42E1-AC0D-DD65963FD6EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

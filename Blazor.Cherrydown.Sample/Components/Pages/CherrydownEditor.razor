@@ -1,6 +1,12 @@
 ﻿@page "/cherrydown"
 @using Blazor.Cherrydown.FileUpload
+@using Blazor.Cherrydown.Sample.Components.RadzenWapper
+@using Radzen.Blazor
+
+@inject StateContainer _stateContainer;
 @inject IConfiguration _config
+@inject ILogger<CherrydownEditor> _logger
+@implements IDisposable
 
 <PageTitle>CherrydownEditor</PageTitle>
 
@@ -9,6 +15,9 @@
 </h3>
 <button @onclick="ChangeMarkdown">Change Markdown</button>
 <button @onclick="SwitchMode">Switch Mode</button>
+@* <RadzenButton Text="Save" BusyText="Saving" IsBusy="@_isSaving" ButtonStyle="Radzen.ButtonStyle.Light" Click="SaveMarkdownContent" /> *@
+
+<BusyButton OnSaving="SaveMarkdownContent" />
 
 <Cherrydown @bind-Markdown="@_markdown" OnFileUpload="@SaveFile" AfterInit="AfterInit" @ref="Editor" />
 
@@ -18,6 +27,7 @@
     private Cherrydown Editor = default!;
 
     private Timer? _timer;
+    private bool _isSaving = false;
 
     // protected override void OnParametersSet()
     // {
@@ -28,10 +38,13 @@
 
     protected override void OnInitialized()
     {
-        _timer = new Timer(async _ =>
+        _timer = new Timer(_ =>
         {
-            await SaveMarkdownContent();
+            InvokeAsync(async () =>
+            {
+                await SaveMarkdownContent();
 
+            });
         }, null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(30));
 
         base.OnInitialized();
@@ -53,9 +66,19 @@
     {
         try
         {
-            // _markdown = _markdown + "\r\n" + "## Changed";
+            _logger.LogWarning("begin saving");
+            _isSaving = true;
+            _stateContainer.IsSaving = true;
 
-            await InvokeAsync(StateHasChanged);
+            await Task.Delay(10 * 1000);
+
+            _isSaving = false;
+            _stateContainer.IsSaving = false;
+
+            // _markdown = _markdown + "\r\n" + "## Changed";
+            _logger.LogWarning("end saving");
+
+            // await InvokeAsync(StateHasChanged);
         }
         catch { }
     }
@@ -78,5 +101,10 @@
         await file.OpenReadStream(15 * 1024 * 1024).CopyToAsync(fs); // 15M
 
         return new FileUploadResult { FileUri = $"{workDirVirtualPath}/{file.Name}" };
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
     }
 }

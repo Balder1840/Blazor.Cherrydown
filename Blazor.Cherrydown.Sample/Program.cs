@@ -1,5 +1,7 @@
+using Blazor.Cherrydown.Sample;
 using Blazor.Cherrydown.Sample.Components;
 using Microsoft.Extensions.FileProviders;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,10 @@ builder.Services.AddRazorComponents()
     {
         opt.DetailedErrors = true;
     });
+
+builder.Services.AddRadzenComponents();
+
+builder.Services.AddSingleton<StateContainer>();
 
 // do not need, seems nothing happen
 // builder.WebHost.UseStaticWebAssets();
