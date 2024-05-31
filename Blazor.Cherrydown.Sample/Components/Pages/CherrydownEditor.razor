@@ -5,28 +5,59 @@
 <PageTitle>CherrydownEditor</PageTitle>
 
 <h3>
-    CherrydownEditor- @_markdown.Substring(0, 10)
+    CherrydownEditor- @_markdown!.Substring(0, 10)
 </h3>
 <button @onclick="ChangeMarkdown">Change Markdown</button>
 <button @onclick="SwitchMode">Switch Mode</button>
 
-<Cherrydown @bind-Markdown="@_markdown" OnFileUpload="@SaveFile" @ref="Editor" />
+<Cherrydown @bind-Markdown="@_markdown" OnFileUpload="@SaveFile" AfterInit="AfterInit" @ref="Editor" />
 
 @code {
     private string? _markdown = "# CherrydownEditor";
 
-    private Cherrydown Editor;
+    private Cherrydown Editor = default!;
 
-    protected override void OnParametersSet()
+    private Timer? _timer;
+
+    // protected override void OnParametersSet()
+    // {
+    //     using var reader = new System.IO.StreamReader(@"C:\zzh\Backup\Src\cherry-markdown\examples\markdown\basic.md");
+    //     _markdown = reader.ReadToEnd();
+    //     base.OnParametersSet();
+    // }
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(async _ =>
+        {
+            await SaveMarkdownContent();
+
+        }, null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(30));
+
+        base.OnInitialized();
+    }
+
+    private async Task AfterInit()
     {
         using var reader = new System.IO.StreamReader(@"C:\zzh\Backup\Src\cherry-markdown\examples\markdown\basic.md");
         _markdown = reader.ReadToEnd();
-        base.OnParametersSet();
+        await Editor.SetValueAsync(_markdown);
     }
 
     void ChangeMarkdown()
     {
         _markdown = "# Changed Markdown";
+    }
+
+    private async Task SaveMarkdownContent()
+    {
+        try
+        {
+            // _markdown = _markdown + "\r\n" + "## Changed";
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch { }
     }
 
     async Task SwitchMode()
@@ -43,7 +74,7 @@
         var workDir = _config.GetValue<string>("WorkDir");
         var workDirVirtualPath = _config.GetValue<string>("WorkDirVirtualPath");
 
-        await using FileStream fs = new(Path.Combine(workDir, file.Name), FileMode.Create);
+        await using FileStream fs = new(Path.Combine(workDir!, file.Name), FileMode.Create);
         await file.OpenReadStream(15 * 1024 * 1024).CopyToAsync(fs); // 15M
 
         return new FileUploadResult { FileUri = $"{workDirVirtualPath}/{file.Name}" };
