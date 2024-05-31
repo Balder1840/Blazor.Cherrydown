@@ -53,11 +53,11 @@ namespace Blazor.Cherrydown
         /// <param name="elementRef">The element reference</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public async ValueTask SetValue(ElementReference elementRef, string value)
+        public async ValueTask SetValue(ElementReference elementRef, string value, bool keepCursor = false)
         {
             var module = await moduleTask.Value;
 
-            await module.InvokeVoidAsync("setValue", elementRef, value);
+            await module.InvokeVoidAsync("setValue", elementRef, value, keepCursor);
         }
 
         /// <summary>

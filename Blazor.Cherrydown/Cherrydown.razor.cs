@@ -45,12 +45,27 @@ namespace Blazor.Cherrydown
         #region Fields
         private string? _markdown = null;
         private bool _initialized = false;
+
+        private bool isMarkdownParameterSet = false;
+        private bool isMarkdownChangedSet = false;
         #endregion
 
         #region Component lifecycles
-        //public override Task SetParametersAsync(ParameterView parameters)
+        public override Task SetParametersAsync(ParameterView parameters)
+        {
+            if (!_initialized)
+            {
+                var paramsDic = parameters.ToDictionary();
+                isMarkdownParameterSet = paramsDic.ContainsKey(nameof(Markdown));
+                isMarkdownChangedSet = paramsDic.ContainsKey(nameof(MarkdownChanged));
+            }
+
+            return base.SetParametersAsync(parameters);
+        }
+
+        //protected override void OnParametersSet()
         //{
-        //    return base.SetParametersAsync(parameters);
+        //    base.OnParametersSet();
         //}
 
         protected override void OnInitialized()
@@ -60,11 +75,6 @@ namespace Blazor.Cherrydown
             ElementId = $"cherrydown-{Identifier.NewId()}";
             base.OnInitialized();
         }
-
-        //protected override Task OnParametersSetAsync()
-        //{
-        //    return base.OnParametersSetAsync();
-        //}
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -80,13 +90,14 @@ namespace Blazor.Cherrydown
                 {
                     relativePageUrl = NavigationManager!.ToBaseRelativePath(url),
                     defaultModel = CherrydownMode.EditAndPreview.ToClientMode(),
-                    markdown = Markdown
+                    markdown = Markdown,
+                    emitValue = isMarkdownChangedSet && isMarkdownParameterSet
                 });
 
                 _initialized = true;
                 _markdown = Markdown;
             }
-            else if (_initialized)
+            else if (_initialized && isMarkdownParameterSet)
             {
                 if (_markdown != Markdown)
                 {

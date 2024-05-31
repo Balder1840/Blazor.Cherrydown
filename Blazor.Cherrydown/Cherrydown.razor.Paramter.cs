@@ -18,9 +18,15 @@ namespace Blazor.Cherrydown
         public EventCallback<string> MarkdownChanged { get; set; }
 
         /// <summary>
-        /// 
+        /// An event that occurs when uploading file.
         /// </summary>
         [Parameter]
         public Func<IBrowserFile, Task<FileUploadResult>>? OnFileUpload { get; set; }
+
+        /// <summary>
+        /// An event that occurs after the markdown editor init.
+        /// </summary>
+        [Parameter]
+        public EventCallback AfterInit { get; set; }
     }
 }

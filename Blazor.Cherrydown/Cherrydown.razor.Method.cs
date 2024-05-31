@@ -20,12 +20,12 @@ namespace Blazor.Cherrydown
         /// </summary>
         /// <param name = "value">Value to set.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public async ValueTask SetValueAsync(string value)
+        public async ValueTask SetValueAsync(string value, bool keepCursor = false)
         {
             if (!_initialized)
                 return;
 
-            await JS!.SetValue(ElementRef, value);
+            await JS!.SetValue(ElementRef, value, keepCursor);
         }
 
         /// <summary>
@@ -67,6 +67,16 @@ namespace Blazor.Cherrydown
             {
                 _markdown = value;
                 await MarkdownChanged.InvokeAsync(value);
+            }
+        }
+
+        [JSInvokable]
+        public async Task AfterMarkdownEditorInit()
+        {
+            _initialized = true;
+            if (AfterInit.HasDelegate)
+            {
+                await AfterInit.InvokeAsync();
             }
         }
 

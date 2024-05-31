@@ -75,6 +75,11 @@ export function initialize(dotNetObjectRef, element, elementId, options) {
             }).finally(() => {
                 removeFileUploadOverlay(element)
             });
+        },
+        callback: {
+            afterInit: () => {
+                dotNetObjectRef.invokeMethodAsync("AfterMarkdownEditorInit")
+            }
         }
     })
 
@@ -85,10 +90,12 @@ export function initialize(dotNetObjectRef, element, elementId, options) {
         element._blazorFilesById = {}
         element._blazorInputFileNextFileId = 0
 
-        const debouncedUpdate = debounce(({ markdown }) => {
-            element.$dotNetObjectRef.invokeMethodAsync("UpdateInternalValue", markdown)
-        }, 500)
-        element.$cherryEditor.onChange(debouncedUpdate)
+        if (options.emitValue) {
+            const debouncedUpdate = debounce(({ markdown }) => {
+                element.$dotNetObjectRef.invokeMethodAsync("UpdateInternalValue", markdown)
+            }, 500)
+            element.$cherryEditor.onChange(debouncedUpdate)
+        }
     }
 
     // hack
